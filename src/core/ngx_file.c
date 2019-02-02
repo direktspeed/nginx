@@ -628,14 +628,7 @@ ngx_create_paths(ngx_cycle_t *cycle, ngx_uid_t user)
             return NGX_ERROR;
         }
 
-        if (fi.st_uid != user) {
-            if (chown((const char *) path[i]->name.data, user, -1) == -1) {
-                ngx_log_error(NGX_LOG_EMERG, cycle->log, ngx_errno,
-                              "chown(\"%s\", %d) failed",
-                              path[i]->name.data, user);
-                return NGX_ERROR;
-            }
-        }
+        // Removed chown call to work inside snap
 
         if ((fi.st_mode & (S_IRUSR|S_IWUSR|S_IXUSR))
                                                   != (S_IRUSR|S_IWUSR|S_IXUSR))
